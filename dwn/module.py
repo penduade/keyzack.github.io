@@ -12,15 +12,11 @@ import sys
 import platform
 import psutil
 import wmi
-import discord.py
-from discord.ext import commands
 import pyautogui
 import winreg
-import firebase_admin
-from firebase_admin import credentials, firestore
-import pywin32
 import winshell
 import win32com.client
+import subprocess
 import time
 
 tokens = []
